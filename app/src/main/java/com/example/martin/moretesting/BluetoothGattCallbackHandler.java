@@ -28,24 +28,19 @@ public class BluetoothGattCallbackHandler {
 
 
     private MainActivity mainActivity;
-    private BluetoothDevice bleDevice;
-    private BluetoothGattCallback gattCallback;
+    private BluetoothModel mBleModel;
     private WeatherProfile mCurrentWeather;
-    private BluetoothGatt mBleGatt;
 
-    public BluetoothGattCallbackHandler(MainActivity mainActivity, BluetoothGatt bleGatt, BluetoothDevice bleDevice, WeatherProfile currentWeather) {
+    public BluetoothGattCallbackHandler(MainActivity mainActivity, BluetoothModel bleModel, WeatherProfile currentWeather) {
         this.mainActivity = mainActivity;
-        this.bleDevice = bleDevice;
-        this.mBleGatt = bleGatt;
+        this.mBleModel = bleModel;
         this.mCurrentWeather = currentWeather;
     }
 
-    public BluetoothGattCallback getGattCallback() {
-        return gattCallback;
-    }
+
 
     public void setGattCallback(){
-        gattCallback = new BluetoothGattCallback() {
+        mBleModel.bleGattCallback = new BluetoothGattCallback() {
             @Override
             public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
                 super.onConnectionStateChange(gatt, status, newState);
@@ -65,7 +60,7 @@ public class BluetoothGattCallbackHandler {
                 Log.i(TAG, "onServicesDiscovered: ");
 
                 for (BluetoothGattService service : gatt.getServices() ) {
-                    if (WeatherThingy.WEATHER_THINGY_SERVICE_UUID.equals(service.getUuid())) {
+                    if (BluetoothModel.WEATHER_THINGY_SERVICE_UUID.equals(service.getUuid())) {
                         mCurrentWeather.setWeatherService(service);
                         Log.i(TAG, "onServicesDiscovered: Found FOOD service.");
                     } else {
@@ -75,13 +70,13 @@ public class BluetoothGattCallbackHandler {
 
                 if (mCurrentWeather.getWeatherService() != null) {
                     for (BluetoothGattCharacteristic characteristic : mCurrentWeather.getWeatherService().getCharacteristics()) {
-                        if (WeatherThingy.WEATHER_THINGY_CHAR_TEMPERATURE_UUID.equals(characteristic.getUuid())) {
+                        if (BluetoothModel.WEATHER_THINGY_CHAR_TEMPERATURE_UUID.equals(characteristic.getUuid())) {
                             mCurrentWeather.setCharTemperature(characteristic);
                             Log.i(TAG, "onServicesDiscovered: Temperature char set");
-                        } else if (WeatherThingy.WEATHER_THINGY_CHAR_HUMIDITY_UUID.equals(characteristic.getUuid())) {
+                        } else if (BluetoothModel.WEATHER_THINGY_CHAR_HUMIDITY_UUID.equals(characteristic.getUuid())) {
                             mCurrentWeather.setCharHumidity(characteristic);
                             Log.i(TAG, "onServicesDiscovered: Humidity char set");
-                        } else if (WeatherThingy.WEATHER_THINGY_CHAR_PRESSURE_SERVICE_UUID.equals(characteristic.getUuid())) {
+                        } else if (BluetoothModel.WEATHER_THINGY_CHAR_PRESSURE_SERVICE_UUID.equals(characteristic.getUuid())) {
                             mCurrentWeather.setCharPressure(characteristic);
                             Log.i(TAG, "onServicesDiscovered: Pressure char set");
                         } else {
@@ -118,10 +113,10 @@ public class BluetoothGattCallbackHandler {
         switch (initiatorState) {
             case STATE_ENABLE_CCCD_TEMPERATURE:
                 if (mCurrentWeather.getCharTemperature() != null) {
-                    if (mBleGatt.setCharacteristicNotification(mCurrentWeather.getCharTemperature(), true)) {
-                        BluetoothGattDescriptor cccdDescriptor = mCurrentWeather.getCharTemperature().getDescriptor(WeatherThingy.BLE_UUID_CCCD);
+                    if (mBleModel.bleGatt.setCharacteristicNotification(mCurrentWeather.getCharTemperature(), true)) {
+                        BluetoothGattDescriptor cccdDescriptor = mCurrentWeather.getCharTemperature().getDescriptor(BluetoothModel.BLE_UUID_CCCD);
                         cccdDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-                        mBleGatt.writeDescriptor(cccdDescriptor);
+                        mBleModel.bleGatt.writeDescriptor(cccdDescriptor);
                     }
                 }
                 break;

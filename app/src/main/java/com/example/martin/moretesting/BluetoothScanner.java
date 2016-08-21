@@ -90,7 +90,7 @@ public class BluetoothScanner {
             try {
                 List<ParcelUuid> uuidList = result.getScanRecord().getServiceUuids();
                 for (int i = 0; i < uuidList.size(); i++) {
-                    if (uuidList.get(i).getUuid().equals(WeatherThingy.WEATHER_THINGY_ADVERTISING_UUID)) {
+                    if (uuidList.get(i).getUuid().equals(BluetoothModel.WEATHER_THINGY_ADVERTISING_UUID)) {
                         Log.i("BLE", "Found WeatherThingy");
                         mHandler.post(new Runnable() {
                             @Override
