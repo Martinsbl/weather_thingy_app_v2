@@ -10,13 +10,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = "MainActivity";
 
     private Button btnScan,btnReset;
-    private TextView txtHello;
+    private TextView txtHello, txtTemperature, txtHumidity;
     private BluetoothScanner bleScanner;
 
     private HashMap<String, WeatherThingy> bleDeviceHashMap;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnReset.setOnClickListener(this);
 
         txtHello = (TextView) findViewById(R.id.txtHello);
+        txtTemperature = (TextView) findViewById(R.id.txtTemperature);
+        txtHumidity = (TextView) findViewById(R.id.txtHumidity);
 
         bleDeviceHashMap = new HashMap<>();
         weatherThingiesList = new ArrayList<>();
@@ -72,6 +75,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (WeatherThingy wt : weatherThingiesList) {
             Log.i(TAG, wt.getAddress() + " - " + wt.getName());
         }
+    }
+
+    public void updateTemperatureValue(double temperature) {
+        txtTemperature.setText(String.format(Locale.ENGLISH, "%.02f" + (char) 0x00B0 + "C", temperature));
+    }
+
+    public void updateHumidityValue(double humidity) {
+        txtHumidity.setText(String.format(Locale.ENGLISH, "%.02f%%", humidity));
     }
 
     @Override

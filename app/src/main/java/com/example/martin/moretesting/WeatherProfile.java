@@ -15,9 +15,37 @@ public class WeatherProfile {
     private BluetoothGattCharacteristic charHumidity;
     private BluetoothGattCharacteristic charPressure;
 
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public double getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(double humidity) {
+        this.humidity = humidity;
+    }
+
+    public double getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(double pressure) {
+        this.pressure = pressure;
+    }
+
+    private double temperature, humidity, pressure;
+
     public WeatherProfile(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
+
+
 
     public BluetoothGattService getWeatherService() {
         return weatherService;

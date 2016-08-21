@@ -26,15 +26,13 @@ public class WeatherThingy {
         deviceNumber++;
         this.mainActivity = mainActivity;
 
-        mBleModel = new BluetoothModel();
-        mBleModel.bleDevice = bleDevice;
-
         currentWeather = new WeatherProfile(mainActivity);
 
+
+        mBleModel = new BluetoothModel();
+        mBleModel.bleDevice = bleDevice;
         BluetoothGattCallbackHandler bleCallbackHandler = new BluetoothGattCallbackHandler(mainActivity, mBleModel, currentWeather);
-        bleCallbackHandler.setGattCallback();
-
-
+        mBleModel.bleGattCallback = bleCallbackHandler.getmBleGattCallback();
         mBleModel.bleGatt = bleDevice.connectGatt(mainActivity, false, mBleModel.bleGattCallback);
 
     }
@@ -55,7 +53,7 @@ public class WeatherThingy {
         mBleModel.bleGatt.disconnect();
         mBleModel.bleGatt.close();
 
-        mBleModel.bleCallbackHandler = null;
+        //mBleModel.bleCallbackHandler = null;
         mBleModel.bleDevice = null;
         deviceNumber--;
         if (deviceNumber < 0) {
