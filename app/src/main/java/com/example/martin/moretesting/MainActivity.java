@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final String TAG = "MainActivity";
 
     private Button btnScan,btnReset;
-    private TextView txtHello, txtTemperature, txtHumidity;
+    private TextView txtHello, txtTemperature, txtHumidity, txtPressure;
     private BluetoothScanner bleScanner;
 
     private HashMap<String, WeatherThingy> bleDeviceHashMap;
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtHello = (TextView) findViewById(R.id.txtHello);
         txtTemperature = (TextView) findViewById(R.id.txtTemperature);
         txtHumidity = (TextView) findViewById(R.id.txtHumidity);
+        txtPressure = (TextView) findViewById(R.id.txtPressure);
 
         bleDeviceHashMap = new HashMap<>();
         weatherThingiesList = new ArrayList<>();
@@ -78,11 +79,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void updateTemperatureValue(double temperature) {
-        txtTemperature.setText(String.format(Locale.ENGLISH, "%.02f" + (char) 0x00B0 + "C", temperature));
+        txtTemperature.setText(String.format(Locale.ENGLISH, "%.1f" + (char) 0x00B0 + "C", temperature));
     }
 
     public void updateHumidityValue(double humidity) {
-        txtHumidity.setText(String.format(Locale.ENGLISH, "%.02f%%", humidity));
+        txtHumidity.setText(String.format(Locale.ENGLISH, "%.1f%%", humidity));
+    }
+
+    public void updatePressureValue(double pressure) {
+        txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa", pressure));
     }
 
     @Override

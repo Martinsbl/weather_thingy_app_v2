@@ -82,7 +82,7 @@ public class BluetoothGattCallbackHandler {
                         } else if (BluetoothModel.WEATHER_THINGY_CHAR_HUMIDITY_UUID.equals(characteristic.getUuid())) {
                             mCurrentWeather.setCharHumidity(characteristic);
                             Log.i(TAG, "onServicesDiscovered: Humidity char set");
-                        } else if (BluetoothModel.WEATHER_THINGY_CHAR_PRESSURE_SERVICE_UUID.equals(characteristic.getUuid())) {
+                        } else if (BluetoothModel.WEATHER_THINGY_CHAR_PRESSURE_UUID.equals(characteristic.getUuid())) {
                             mCurrentWeather.setCharPressure(characteristic);
                             Log.i(TAG, "onServicesDiscovered: Pressure char set");
                         } else {
@@ -111,9 +111,6 @@ public class BluetoothGattCallbackHandler {
                             mainActivity.updateTemperatureValue(temperature);
                         }
                     });
-                    initiatorState = DeviceInitiatorStates.STATE_ENABLE_CCCD_HUMIDITY;
-                    deviceInitiateStateMachine();
-                    //Log.i(TAG, "onCharacteristicChanged: Temperature = " + String.format(Locale.ENGLISH, "%.02f", temperature));
                 } else if (BluetoothModel.WEATHER_THINGY_CHAR_HUMIDITY_UUID.equals(characteristic.getUuid())) {
                     final double humidity = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0) / 1024.0;
                     mCurrentWeather.setHumidity(humidity);
@@ -123,9 +120,15 @@ public class BluetoothGattCallbackHandler {
                             mainActivity.updateHumidityValue(humidity);
                         }
                     });
-                    initiatorState = DeviceInitiatorStates.STATE_ENABLE_CCCD_PRESSURE;
-                    deviceInitiateStateMachine();
-                    //Log.i(TAG, "onCharacteristicChanged: Temperature = " + String.format(Locale.ENGLISH, "%.02f", temperature));
+                }else if (BluetoothModel.WEATHER_THINGY_CHAR_PRESSURE_UUID.equals(characteristic.getUuid())) {
+                    final double pressure = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0) / 100.0;
+                    mCurrentWeather.setPressure(pressure);
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mainActivity.updatePressureValue(pressure);
+                        }
+                    });
                 } else {
                     Log.i(TAG, "onCharacteristicChanged: " + characteristic.getUuid() + ". New value = " + characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0));
                 }
@@ -135,7 +138,27 @@ public class BluetoothGattCallbackHandler {
             @Override
             public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
                 super.onDescriptorWrite(gatt, descriptor, status);
-                Log.i(TAG, "onDescriptorWrite: " + descriptor.getUuid());
+
+                byte[] cccdTemperature = mCurrentWeather.getCharTemperature().getDescriptor(BluetoothModel.BLE_UUID_CCCD).getValue();
+                byte[] cccdHumidity = mCurrentWeather.getCharHumidity().getDescriptor(BluetoothModel.BLE_UUID_CCCD).getValue();
+                byte[] cccdPressure = mCurrentWeather.getCharPressure().getDescriptor(BluetoothModel.BLE_UUID_CCCD).getValue();
+
+                if (cccdTemperature != BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE) {
+                    initiatorState = DeviceInitiatorStates.STATE_ENABLE_CCCD_TEMPERATURE;
+                    deviceInitiateStateMachine();
+                    Log.i(TAG, "onDescriptorWrite: Enabling Temp CCCD ");
+                } else if (cccdHumidity != BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE) {
+                    initiatorState = DeviceInitiatorStates.STATE_ENABLE_CCCD_HUMIDITY;
+                    deviceInitiateStateMachine();
+                    Log.i(TAG, "onDescriptorWrite: Enabling Humnidity CCCD ");
+                } else if (cccdPressure != BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE) {
+                    initiatorState = DeviceInitiatorStates.STATE_ENABLE_CCCD_PRESSURE;
+                    deviceInitiateStateMachine();
+                    Log.i(TAG, "onDescriptorWrite: Enabling Pressure CCCD ");
+                } else {
+                    Log.i(TAG, "onDescriptorWrite: Whoot?");
+                }
+
             }
         };
     }
@@ -161,6 +184,16 @@ public class BluetoothGattCallbackHandler {
                     }
                 }
                 break;
+            case STATE_ENABLE_CCCD_PRESSURE:
+                if (mCurrentWeather.getCharPressure() != null) {
+                    if (mBleModel.bleGatt.setCharacteristicNotification(mCurrentWeather.getCharPressure(), true)) {
+                        BluetoothGattDescriptor cccdDescriptor = mCurrentWeather.getCharPressure().getDescriptor(BluetoothModel.BLE_UUID_CCCD);
+                        cccdDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                        mBleModel.bleGatt.writeDescriptor(cccdDescriptor);
+                    }
+                }
+                break;
+
             default:
                 break;
         }
