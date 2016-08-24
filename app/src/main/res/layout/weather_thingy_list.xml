@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
     >
 
     <TextView
@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="50sp"
+        android:textSize="@dimen/text_size_temperature"
         android:text="---"
         tools:text="25.2C"/>
 
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="40sp"
+        android:textSize="@dimen/text_size_humidity"
         android:text="---"
         tools:text="43%"/>
 
@@ -29,8 +29,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="40sp"
+        android:textSize="@dimen/text_size_pressure"
         android:text="---"
         tools:text="1002.3"/>
+
+    <TextView
+        android:id="@+id/txtListBattery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="@dimen/text_size_battery"
+        android:text="---"
+        tools:text="2.2V"/>
+
+    <TextView
+        android:id="@+id/txtListDeviceRssi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="@dimen/text_size_rssi"
+        android:text="---"
+        tools:text="-47 dBm"/>
+
+    <TextView
+        android:id="@+id/txtListDeviceAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="@dimen/text_size_address"
+        android:text="---"
+        tools:text="45:65:78:32:14:21"/>
 
 </LinearLayout>

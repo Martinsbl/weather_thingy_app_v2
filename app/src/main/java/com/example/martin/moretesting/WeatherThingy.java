@@ -37,6 +37,10 @@ public class WeatherThingy {
 
     }
 
+    public WeatherProfile getCurrentWeather() {
+        return currentWeather;
+    }
+
     public String getAddress() {
         return mBleModel.bleDevice.getAddress();
     }
@@ -53,7 +57,6 @@ public class WeatherThingy {
         mBleModel.bleGatt.disconnect();
         mBleModel.bleGatt.close();
 
-        //mBleModel.bleCallbackHandler = null;
         mBleModel.bleDevice = null;
         deviceNumber--;
         if (deviceNumber < 0) {

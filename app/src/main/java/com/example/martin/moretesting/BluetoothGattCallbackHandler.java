@@ -54,6 +54,7 @@ public class BluetoothGattCallbackHandler {
                     Log.i(TAG, "onConnectionStateChange: STATE_CONNECTED to " + gatt.getDevice().getAddress());
                     gatt.discoverServices();
                 } else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+                    mainActivity.removeDeviceFromList(gatt.getDevice());
                     Log.i(TAG, "onConnectionStateChange: STATE_DISCONNECTED from " + gatt.getDevice().getAddress());
                 } else {
                     Log.i(TAG, "onConnectionStateChange: newState: " + newState + " @ " + gatt.getDevice().getAddress());

@@ -1,12 +1,16 @@
 package com.example.martin.moretesting;
 
 import android.bluetooth.BluetoothDevice;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.R.layout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,16 +22,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button btnScan,btnReset;
     private TextView txtHello, txtTemperature, txtHumidity, txtPressure;
+
+    private ListView listViewWeatherThingy;
+
     private BluetoothScanner bleScanner;
 
     private HashMap<String, WeatherThingy> bleDeviceHashMap;
     private ArrayList<WeatherThingy> weatherThingiesList;
+    private WeatherThingyListAdapter listAdapter;
+
+    private Handler scannerTimer;
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         btnScan = (Button) findViewById(R.id.btnScan);
         btnScan.setOnClickListener(this);
@@ -42,10 +53,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bleDeviceHashMap = new HashMap<>();
         weatherThingiesList = new ArrayList<>();
 
+        listViewWeatherThingy = (ListView) findViewById(R.id.listWeatherThingies);
+        listAdapter = new WeatherThingyListAdapter(this, layout.simple_list_item_1, weatherThingiesList);
+        listViewWeatherThingy.setAdapter(listAdapter);
+
+
         bleScanner = new BluetoothScanner(this);
         bleScanner.startScanning();
 
+        scannerTimer = new Handler();
+        runRepeatedScanner(true);
     }
+
+    public void runRepeatedScanner(boolean doRepeatedScanning) {
+        if (doRepeatedScanning) {
+            repeatedScanner.run();
+        } else {
+            scannerTimer.removeCallbacks(repeatedScanner);
+        }
+    }
+
+    private Runnable repeatedScanner = new Runnable() {
+        @Override
+        public void run() {
+            try{
+                bleScanner.startScanning();
+            }finally {
+                scannerTimer.postDelayed(repeatedScanner, 30000);
+            }
+        }
+    };
 
     public void addDeviceToList(BluetoothDevice bleDevice) {
         String deviceAddress = bleDevice.getAddress();
@@ -53,18 +90,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             WeatherThingy weatherThingy = new WeatherThingy(this, bleDevice);
             bleDeviceHashMap.put(deviceAddress, weatherThingy);
             weatherThingiesList.add(weatherThingy);
+            //listAdapter.add(weatherThingy);
             Log.i(TAG, "createWeatherThingy: Added " + deviceAddress + " to list");
         }
     }
 
+    public void removeDeviceFromList(BluetoothDevice bleDevice) {
+        String deviceAddress = bleDevice.getAddress();
+        WeatherThingy wt = bleDeviceHashMap.get(deviceAddress);
+        Log.i(TAG, "removeDeviceFromHash: before list size : " + weatherThingiesList.size() + ", hash size: " + bleDeviceHashMap.size());
+        if (weatherThingiesList.contains(wt)) {
+            wt.destroyWeatherThingy();
+            weatherThingiesList.remove(wt);
+        }
+
+        if (bleDeviceHashMap.containsKey(deviceAddress)) {
+            bleDeviceHashMap.remove(deviceAddress);
+        }
+        Log.i(TAG, "removeDeviceFromHash: after list size : " + weatherThingiesList.size() + ", hash size: " + bleDeviceHashMap.size());
+    }
+
     public void resetApplication() {
+        runRepeatedScanner(false);
         bleScanner.terminateScanning();
         for (WeatherThingy wt : weatherThingiesList) {
             wt.destroyWeatherThingy();
         }
-
         bleDeviceHashMap.clear();
         weatherThingiesList.clear();
+        listAdapter.clear();
     }
 
     public void printHashMap() {
@@ -88,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void updatePressureValue(double pressure) {
         txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa", pressure));
+        listAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -10,10 +10,17 @@ import android.bluetooth.BluetoothGattService;
 public class WeatherProfile {
     private MainActivity mainActivity;
 
+    private double temperature, humidity, pressure;
+
     private BluetoothGattService weatherService;
     private BluetoothGattCharacteristic charTemperature;
     private BluetoothGattCharacteristic charHumidity;
     private BluetoothGattCharacteristic charPressure;
+
+
+    public WeatherProfile(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
 
     public double getTemperature() {
         return temperature;
@@ -38,14 +45,6 @@ public class WeatherProfile {
     public void setPressure(double pressure) {
         this.pressure = pressure;
     }
-
-    private double temperature, humidity, pressure;
-
-    public WeatherProfile(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
-    }
-
-
 
     public BluetoothGattService getWeatherService() {
         return weatherService;

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.ParcelUuid;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -72,10 +73,11 @@ public class BluetoothScanner {
                     mBleScanner.stopScan(mScanCallback);
                     mainActivity.printHashMap();
                 }
-            }, 3000);
+            }, 1000);
 
             mIsScanning = true;
             mBleScanner.startScan(mScanCallback);
+            Toast.makeText(mainActivity, "Scanning...", Toast.LENGTH_SHORT).show();
         } else {
             mIsScanning = false;
             mBleScanner.stopScan(mScanCallback);
