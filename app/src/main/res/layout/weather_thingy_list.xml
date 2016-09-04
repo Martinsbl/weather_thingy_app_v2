@@ -4,7 +4,10 @@
     android:orientation="vertical"
     android:layout_width="250dp"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:paddingTop="15dp"
     >
+
 
     <TextView
         android:id="@+id/txtListTemperature"
@@ -12,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="@dimen/text_size_temperature"
-        android:text="---"
+        android:text="@string/default_text"
         tools:text="25.2C"/>
 
     <TextView
@@ -21,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="@dimen/text_size_humidity"
-        android:text="---"
+        android:text="@string/default_text"
         tools:text="43%"/>
 
     <TextView
@@ -30,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="@dimen/text_size_pressure"
-        android:text="---"
+        android:text="@string/default_text"
         tools:text="1002.3"/>
 
     <TextView
@@ -39,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="@dimen/text_size_battery"
-        android:text="---"
+        android:text="@string/default_text"
         tools:text="2.2V"/>
 
     <TextView
@@ -48,8 +51,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="@dimen/text_size_rssi"
-        android:text="---"
+        android:text="@string/default_text"
         tools:text="-47 dBm"/>
+
 
     <TextView
         android:id="@+id/txtListDeviceAddress"
@@ -57,7 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="@dimen/text_size_address"
-        android:text="---"
+        android:text="@string/default_text"
         tools:text="45:65:78:32:14:21"/>
+
 
 </LinearLayout>

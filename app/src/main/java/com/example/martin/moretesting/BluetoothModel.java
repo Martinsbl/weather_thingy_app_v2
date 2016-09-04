@@ -21,8 +21,9 @@ public class BluetoothModel {
 
     BluetoothDevice bleDevice;
     BluetoothGatt bleGatt;
-    //BluetoothGattCallbackHandler bleCallbackHandler;
     BluetoothGattCallback bleGattCallback;
+
+    int rssi;
 
 
 

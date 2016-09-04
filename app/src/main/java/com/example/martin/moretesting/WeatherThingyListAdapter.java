@@ -33,6 +33,7 @@ public class WeatherThingyListAdapter extends ArrayAdapter<WeatherThingy> {
         this.context = context;
         this.listWeatherThingies = objects;
 
+
         for (int i = 0; i < objects.size(); i++) {
             mIdMap.put(objects.get(i).getAddress(), i);
         }
@@ -60,16 +61,19 @@ public class WeatherThingyListAdapter extends ArrayAdapter<WeatherThingy> {
         }
 
         TextView txtTemperature = (TextView) view.findViewById(R.id.txtListTemperature);
-        txtTemperature.setText(String.format(Locale.ENGLISH, "%.2f" + (char) 0x00B0 + "C", listWeatherThingies.get(position).getCurrentWeather().getTemperature()));
+        txtTemperature.setText(String.format(Locale.ENGLISH, "%.1f" + (char) 0x00B0 + "C", listWeatherThingies.get(position).getCurrentWeather().getTemperature()));
 
         TextView txtHumidity = (TextView) view.findViewById(R.id.txtListHumidity);
-        txtHumidity.setText(String.format(Locale.ENGLISH, "%.2f%%", listWeatherThingies.get(position).getCurrentWeather().getHumidity()));
+        txtHumidity.setText(String.format(Locale.ENGLISH, "%.1f%%", listWeatherThingies.get(position).getCurrentWeather().getHumidity()));
 
         TextView txtPressure = (TextView) view.findViewById(R.id.txtListPressure);
-        txtPressure.setText(String.format(Locale.ENGLISH, "%.2fhPa", listWeatherThingies.get(position).getCurrentWeather().getPressure()));
+        txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa", listWeatherThingies.get(position).getCurrentWeather().getPressure()));
 
         TextView txtDeviceAddress = (TextView) view.findViewById(R.id.txtListDeviceAddress);
         txtDeviceAddress.setText(listWeatherThingies.get(position).getAddress());
+
+        TextView txtRssi = (TextView) view.findViewById(R.id.txtListDeviceRssi);
+        txtRssi.setText(String.format(Locale.ENGLISH, "%d dBm", listWeatherThingies.get(position).getmBleModel().rssi));
 
         return view;
     }

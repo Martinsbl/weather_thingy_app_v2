@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try{
                 bleScanner.startScanning();
             }finally {
-                scannerTimer.postDelayed(repeatedScanner, 30000);
+                scannerTimer.postDelayed(repeatedScanner, 120000);
             }
         }
     };

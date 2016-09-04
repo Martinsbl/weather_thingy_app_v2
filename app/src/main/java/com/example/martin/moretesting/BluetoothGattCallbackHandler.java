@@ -27,7 +27,6 @@ public class BluetoothGattCallbackHandler {
     }
     private DeviceInitiatorStates initiatorState = DeviceInitiatorStates.STATE_IDLE;
 
-
     private MainActivity mainActivity;
     private BluetoothModel mBleModel;
     private WeatherProfile mCurrentWeather;
@@ -156,9 +155,15 @@ public class BluetoothGattCallbackHandler {
                     initiatorState = DeviceInitiatorStates.STATE_ENABLE_CCCD_PRESSURE;
                     deviceInitiateStateMachine();
                     Log.i(TAG, "onDescriptorWrite: Enabling Pressure CCCD ");
-                } else {
-                    Log.i(TAG, "onDescriptorWrite: Whoot?");
                 }
+
+            }
+
+            @Override
+            public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
+                super.onReadRemoteRssi(gatt, rssi, status);
+                Log.i(TAG, "onReadRemoteRssi: " + rssi);
+                mBleModel.rssi = rssi;
 
             }
         };

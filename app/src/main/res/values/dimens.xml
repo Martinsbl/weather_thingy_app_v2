@@ -1,0 +1,11 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="text_size_humidity">30sp</dimen>
+    <dimen name="text_size_pressure">20sp</dimen>
+    <dimen name="text_size_temperature">50sp</dimen>
+    <dimen name="text_size_battery">20sp</dimen>
+    <dimen name="text_size_rssi">12sp</dimen>
+    <dimen name="text_size_address">12sp</dimen>
+</resources>
