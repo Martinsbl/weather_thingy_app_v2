@@ -6,22 +6,39 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:paddingTop="15dp"
+    android:weightSum="3"
     >
 
 
-
-    <TextView
-        android:id="@+id/txtListTemperature"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_temperature"
-        android:text="@string/default_text"
-        tools:text="25.2C" />
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/txtListTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/main_text_size"
+            android:text="@string/default_text"
+            tools:text="25.2C" />
+
+        <TextView
+            android:id="@+id/txtListDeviceAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sub_text_size"
+            android:text="@string/default_text"
+            tools:text="45:65:78:32:14:21" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:orientation="vertical">
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
 
 
         <TextView
@@ -29,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="@dimen/text_size_humidity"
+            android:textSize="@dimen/main_text_size"
             android:text="@string/default_text"
             tools:text="43%" />
 
@@ -38,39 +55,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="@dimen/text_size_pressure"
+            android:textSize="@dimen/sub_text_size"
             android:text="@string/default_text"
             tools:text="1002.3hPa" />
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/txtListBattery"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="@dimen/text_size_battery"
-        android:text="@string/default_text"
-        tools:text="2.2V"/>
+        android:orientation="vertical"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/txtListDeviceRssi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="@dimen/text_size_rssi"
-        android:text="@string/default_text"
-        tools:text="-47 dBm"/>
+        <TextView
+            android:id="@+id/txtListBattery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/main_text_size"
+            android:text="@string/default_text"
+            tools:text="2.2V" />
+
+        <TextView
+            android:id="@+id/txtListDeviceRssi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/sub_text_size"
+            android:text="@string/default_text"
+            tools:text="-47 dBm" />
+    </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/txtListDeviceAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="@dimen/text_size_address"
-        android:text="@string/default_text"
-        tools:text="45:65:78:32:14:21"/>
+
 
 
 </LinearLayout>
