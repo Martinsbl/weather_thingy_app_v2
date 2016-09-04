@@ -24,12 +24,6 @@
         android:orientation="horizontal"
         android:gravity="bottom">
 
-        <TextView
-            android:id="@+id/txtHello"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Hello World!" />
-
         <Button
             android:id="@+id/btnScan"
             android:text="Scan"

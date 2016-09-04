@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="250dp"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:paddingTop="15dp"
     >
 
 
+
     <TextView
         android:id="@+id/txtListTemperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:textSize="@dimen/text_size_temperature"
         android:text="@string/default_text"
-        tools:text="25.2C"/>
+        tools:text="25.2C" />
 
-    <TextView
-        android:id="@+id/txtListHumidity"
-        android:layout_width="wrap_content"
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="@dimen/text_size_humidity"
-        android:text="@string/default_text"
-        tools:text="43%"/>
+        android:layout_width="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtListPressure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="@dimen/text_size_pressure"
-        android:text="@string/default_text"
-        tools:text="1002.3"/>
+
+        <TextView
+            android:id="@+id/txtListHumidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/text_size_humidity"
+            android:text="@string/default_text"
+            tools:text="43%" />
+
+        <TextView
+            android:id="@+id/txtListPressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/text_size_pressure"
+            android:text="@string/default_text"
+            tools:text="1002.3hPa" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/txtListBattery"

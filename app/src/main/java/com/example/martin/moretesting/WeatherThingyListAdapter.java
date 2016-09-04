@@ -2,15 +2,11 @@ package com.example.martin.moretesting;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.LoginFilter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +53,7 @@ public class WeatherThingyListAdapter extends ArrayAdapter<WeatherThingy> {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.weather_thingy_list, parent, false);
+            view = inflater.inflate(R.layout.weather_thingy_list_item, parent, false);
         }
 
         TextView txtTemperature = (TextView) view.findViewById(R.id.txtListTemperature);
