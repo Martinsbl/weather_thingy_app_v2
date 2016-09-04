@@ -72,15 +72,18 @@ public class BluetoothScanner {
                     mIsScanning = false;
                     mBleScanner.stopScan(mScanCallback);
                     mainActivity.printHashMap();
+                    Log.i(TAG, "scanLeDevice: STOP Scanning.");
                 }
-            }, 1000);
+            }, 3000);
 
             mIsScanning = true;
             mBleScanner.startScan(mScanCallback);
             Toast.makeText(mainActivity, "Scanning...", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "scanLeDevice: START SCANNING.");
         } else {
             mIsScanning = false;
             mBleScanner.stopScan(mScanCallback);
+            Log.i(TAG, "scanLeDevice: STOP Scanning.");
         }
     }
 
