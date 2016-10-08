@@ -6,49 +6,63 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:paddingTop="15dp"
-    android:weightSum="3"
-    android:padding="10dp"
     >
 
-
-    <LinearLayout
-        android:id="@+id/data_header_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        >
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txtListDeviceAddress"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/data_header_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="@dimen/main_text_size"
-            android:text="@string/default_text"
-            tools:text="45:65:78:32:14:21"
-            android:ellipsize="end"
-            android:maxLines="1"/>
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            >
 
-        <TextView
-            android:id="@+id/txtListTemperature"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/txtListDeviceAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/main_text_size"
+                android:text="@string/default_text"
+                tools:text="45:65:78:32:14:21"
+                android:ellipsize="end"
+                android:maxLines="1"/>
+
+            <TextView
+                android:id="@+id/txtListTemperature"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/main_text_size"
+                android:text="@string/default_text"
+                android:gravity="center"
+                tools:text="25.2C" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/expand_icon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="@dimen/main_text_size"
-            android:text="@string/default_text"
-            android:gravity="center"
-            android:drawableRight="@drawable/ic_expand_more_black"
-            tools:text="25.2C" />
+            android:src="@drawable/ic_expand_more_black"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"/>
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/sensor_data_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -123,5 +137,10 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"/>
 
 </LinearLayout>

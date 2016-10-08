@@ -1,25 +1,23 @@
 package com.example.martin.moretesting;
 
+import android.Manifest;
 import android.bluetooth.BluetoothDevice;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.R.layout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
-import android.Manifest;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -41,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     final private int BLE_PERMISSION = 1;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -75,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         weatherThingiesList = new ArrayList<>();
 
         listViewWeatherThingy = (RecyclerView) findViewById(R.id.listWeatherThingies);
+        listViewWeatherThingy.setLayoutManager(new LinearLayoutManager(this));
         listAdapter = new WeatherThingyListAdapter(this, weatherThingiesList);
         listViewWeatherThingy.setAdapter(listAdapter);
     }

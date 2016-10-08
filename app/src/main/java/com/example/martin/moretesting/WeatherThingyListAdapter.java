@@ -1,10 +1,13 @@
 package com.example.martin.moretesting;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -63,6 +66,9 @@ public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingy
             public void onClick(View v) {
                 LinearLayout container = holder.dataContainer;
                 container.setVisibility(container.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                int iconReference = container.getVisibility() == View.GONE ? R.drawable.ic_expand_more_black : R.drawable.ic_expand_less_black;
+                Drawable expandDrawable = ContextCompat.getDrawable(context, iconReference);
+                holder.expandIcon.setImageDrawable(expandDrawable);
             }
         });
 
@@ -79,6 +85,7 @@ public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingy
         LinearLayout dataContainer;
         LinearLayout parentLayout;
         LinearLayout dataHeaderView;
+        ImageView expandIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -92,6 +99,8 @@ public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingy
             dataContainer = (LinearLayout) itemView.findViewById(R.id.sensor_data_container);
             parentLayout = (LinearLayout) itemView.findViewById(R.id.parent_view);
             dataHeaderView = (LinearLayout) itemView.findViewById(R.id.data_header_view);
+
+            expandIcon = (ImageView) itemView.findViewById(R.id.expand_icon);
         }
     }
 }
