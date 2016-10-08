@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final String TAG = "MainActivity";
 
     private Button btnScan,btnReset;
-    private TextView txtHello, txtTemperature, txtHumidity, txtPressure;
+    private TextView txtBattery, txtTemperature, txtHumidity, txtPressure;
 
     private ListView listViewWeatherThingy;
 
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnReset = (Button) findViewById(R.id.btnReset);
         btnReset.setOnClickListener(this);
 
-        txtHello = (TextView) findViewById(R.id.txtHello);
         txtTemperature = (TextView) findViewById(R.id.txtTemperature);
         txtHumidity = (TextView) findViewById(R.id.txtHumidity);
         txtPressure = (TextView) findViewById(R.id.txtPressure);
@@ -158,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try{
                 bleScanner.startScanning();
             }finally {
-                scannerTimer.postDelayed(repeatedScanner, 120000);
+                scannerTimer.postDelayed(repeatedScanner, 15000);
             }
         }
     };
@@ -212,15 +211,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void updateTemperatureValue(double temperature) {
-        txtTemperature.setText(String.format(Locale.ENGLISH, "%.1f" + (char) 0x00B0 + "C", temperature));
+//        txtTemperature.setText(String.format(Locale.ENGLISH, "%.1f" + (char) 0x00B0 + "C", temperature));
     }
 
     public void updateHumidityValue(double humidity) {
-        txtHumidity.setText(String.format(Locale.ENGLISH, "%.1f%%", humidity));
+//        txtHumidity.setText(String.format(Locale.ENGLISH, "%.1f%%", humidity));
     }
 
     public void updatePressureValue(double pressure) {
-        txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa", pressure));
+//        txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa", pressure));
+        listAdapter.notifyDataSetChanged();
+    }
+
+    public void updateBatteryLevel(int batteryLevel) {
         listAdapter.notifyDataSetChanged();
     }
 
@@ -228,12 +231,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnScan:
-                txtHello.setText("Hei");
                 bleScanner.startScanning();
                 break;
             case R.id.btnReset:
                 resetApplication();
-                txtHello.setText("Reset");
                 break;
             default:
                 break;

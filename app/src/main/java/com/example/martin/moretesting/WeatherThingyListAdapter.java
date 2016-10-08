@@ -71,6 +71,9 @@ public class WeatherThingyListAdapter extends ArrayAdapter<WeatherThingy> {
         TextView txtRssi = (TextView) view.findViewById(R.id.txtListDeviceRssi);
         txtRssi.setText(String.format(Locale.ENGLISH, "%d dBm", listWeatherThingies.get(position).getmBleModel().rssi));
 
+        TextView txtBattery = (TextView) view.findViewById(R.id.txtListBattery);
+        txtBattery.setText(String.format(Locale.ENGLISH, "%d%%", listWeatherThingies.get(position).getCurrentWeather().getBatteryLevel()));
+
         return view;
     }
 }

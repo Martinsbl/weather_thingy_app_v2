@@ -11,12 +11,39 @@ public class WeatherProfile {
     private MainActivity mainActivity;
 
     private double temperature, humidity, pressure;
+    private int batteryLevel;
+
+    public int getBatteryLevel() {
+        return batteryLevel;
+    }
+
+    public void setBatteryLevel(int batteryLevel) {
+        this.batteryLevel = batteryLevel;
+    }
 
     private BluetoothGattService weatherService;
     private BluetoothGattCharacteristic charTemperature;
     private BluetoothGattCharacteristic charHumidity;
     private BluetoothGattCharacteristic charPressure;
 
+    private BluetoothGattService batteryService;
+    private BluetoothGattCharacteristic charBattery;
+
+    public BluetoothGattService getBatteryService() {
+        return batteryService;
+    }
+
+    public void setBatteryService(BluetoothGattService batteryService) {
+        this.batteryService = batteryService;
+    }
+
+    public BluetoothGattCharacteristic getCharBattery() {
+        return charBattery;
+    }
+
+    public void setCharBattery(BluetoothGattCharacteristic charBattery) {
+        this.charBattery = charBattery;
+    }
 
     public WeatherProfile(MainActivity mainActivity) {
         this.mainActivity = mainActivity;

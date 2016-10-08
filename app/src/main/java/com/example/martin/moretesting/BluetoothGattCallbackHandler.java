@@ -24,6 +24,7 @@ public class BluetoothGattCallbackHandler {
         STATE_ENABLE_CCCD_TEMPERATURE,
         STATE_ENABLE_CCCD_HUMIDITY,
         STATE_ENABLE_CCCD_PRESSURE,
+        STATE_ENABLE_CCCD_BATTERY,
     }
     private DeviceInitiatorStates initiatorState = DeviceInitiatorStates.STATE_IDLE;
 
@@ -69,6 +70,9 @@ public class BluetoothGattCallbackHandler {
                     if (BluetoothModel.WEATHER_THINGY_SERVICE_UUID.equals(service.getUuid())) {
                         mCurrentWeather.setWeatherService(service);
                         Log.i(TAG, "onServicesDiscovered: Found FOOD service.");
+                    } else if (BluetoothModel.WEATHER_THINGY_BATTERY_SERVICE_UUID.equals(service.getUuid())) {
+                        mCurrentWeather.setBatteryService(service);
+                        Log.i(TAG, "onServicesDiscovered: Found BATTERY service.");
                     } else {
                         Log.i(TAG, "onServicesDiscovered: Unknown service found: " + service.getUuid());
                     }
@@ -90,6 +94,18 @@ public class BluetoothGattCallbackHandler {
                         }
                     }
                 }
+
+                if (mCurrentWeather.getBatteryService() != null) {
+                    for (BluetoothGattCharacteristic characteristic : mCurrentWeather.getBatteryService().getCharacteristics()) {
+                        if (BluetoothModel.WEATHER_THINGY_CHAR_BATTERY_UUID.equals(characteristic.getUuid())) {
+                            mCurrentWeather.setCharBattery(characteristic);
+                            Log.i(TAG, "onServicesDiscovered: Battery char set");
+                        } else {
+                            Log.i(TAG, "onServicesDiscovered: Found wrong char: " + characteristic.getUuid());
+                        }
+                    }
+                }
+
                 initiatorState = DeviceInitiatorStates.STATE_ENABLE_CCCD_TEMPERATURE;
                 deviceInitiateStateMachine();
             }
@@ -102,6 +118,7 @@ public class BluetoothGattCallbackHandler {
             @Override
             public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
                 super.onCharacteristicChanged(gatt, characteristic);
+
                 if (BluetoothModel.WEATHER_THINGY_CHAR_TEMPERATURE_UUID.equals(characteristic.getUuid())) {
                     final double temperature = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0) / 100.0;
                     mCurrentWeather.setTemperature(temperature);
@@ -129,6 +146,15 @@ public class BluetoothGattCallbackHandler {
                             mainActivity.updatePressureValue(pressure);
                         }
                     });
+                } else if (BluetoothModel.WEATHER_THINGY_CHAR_BATTERY_UUID.equals(characteristic.getUuid())) {
+                    final int batteryLevel = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+                    mCurrentWeather.setBatteryLevel(batteryLevel);
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mainActivity.updateBatteryLevel(batteryLevel);
+                        }
+                    });
                 } else {
                     Log.i(TAG, "onCharacteristicChanged: " + characteristic.getUuid() + ". New value = " + characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0));
                 }
@@ -142,6 +168,10 @@ public class BluetoothGattCallbackHandler {
                 byte[] cccdTemperature = mCurrentWeather.getCharTemperature().getDescriptor(BluetoothModel.BLE_UUID_CCCD).getValue();
                 byte[] cccdHumidity = mCurrentWeather.getCharHumidity().getDescriptor(BluetoothModel.BLE_UUID_CCCD).getValue();
                 byte[] cccdPressure = mCurrentWeather.getCharPressure().getDescriptor(BluetoothModel.BLE_UUID_CCCD).getValue();
+                byte[] cccdBattery = null;
+                if (mCurrentWeather.getCharBattery() != null) {
+                    cccdBattery = mCurrentWeather.getCharBattery().getDescriptor(BluetoothModel.BLE_UUID_CCCD).getValue();
+                }
 
                 if (cccdTemperature != BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE) {
                     initiatorState = DeviceInitiatorStates.STATE_ENABLE_CCCD_TEMPERATURE;
@@ -155,6 +185,12 @@ public class BluetoothGattCallbackHandler {
                     initiatorState = DeviceInitiatorStates.STATE_ENABLE_CCCD_PRESSURE;
                     deviceInitiateStateMachine();
                     Log.i(TAG, "onDescriptorWrite: Enabling Pressure CCCD ");
+                }else if (cccdBattery != BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE) {
+                    if (mCurrentWeather.getCharBattery() != null) {
+                        initiatorState = DeviceInitiatorStates.STATE_ENABLE_CCCD_BATTERY;
+                        deviceInitiateStateMachine();
+                        Log.i(TAG, "onDescriptorWrite: Enabling Battery CCCD ");
+                    }
                 }
 
             }
@@ -194,6 +230,15 @@ public class BluetoothGattCallbackHandler {
                 if (mCurrentWeather.getCharPressure() != null) {
                     if (mBleModel.bleGatt.setCharacteristicNotification(mCurrentWeather.getCharPressure(), true)) {
                         BluetoothGattDescriptor cccdDescriptor = mCurrentWeather.getCharPressure().getDescriptor(BluetoothModel.BLE_UUID_CCCD);
+                        cccdDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                        mBleModel.bleGatt.writeDescriptor(cccdDescriptor);
+                    }
+                }
+                break;
+            case STATE_ENABLE_CCCD_BATTERY:
+                if (mCurrentWeather.getCharBattery() != null) {
+                    if (mBleModel.bleGatt.setCharacteristicNotification(mCurrentWeather.getCharBattery(), true)) {
+                        BluetoothGattDescriptor cccdDescriptor = mCurrentWeather.getCharBattery().getDescriptor(BluetoothModel.BLE_UUID_CCCD);
                         cccdDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                         mBleModel.bleGatt.writeDescriptor(cccdDescriptor);
                     }
