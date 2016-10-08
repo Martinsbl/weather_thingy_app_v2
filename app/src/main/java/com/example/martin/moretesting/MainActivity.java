@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnScan,btnReset;
     private TextView txtBattery, txtTemperature, txtHumidity, txtPressure;
 
-    private ListView listViewWeatherThingy;
+    private RecyclerView listViewWeatherThingy;
 
     private BluetoothScanner bleScanner;
 
@@ -73,8 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bleDeviceHashMap = new HashMap<>();
         weatherThingiesList = new ArrayList<>();
 
-        listViewWeatherThingy = (ListView) findViewById(R.id.listWeatherThingies);
-        listAdapter = new WeatherThingyListAdapter(this, layout.simple_list_item_1, weatherThingiesList);
+        listViewWeatherThingy = (RecyclerView) findViewById(R.id.listWeatherThingies);
+        listAdapter = new WeatherThingyListAdapter(this, weatherThingiesList);
         listViewWeatherThingy.setAdapter(listAdapter);
     }
 

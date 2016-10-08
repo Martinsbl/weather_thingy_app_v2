@@ -1,31 +1,25 @@
 package com.example.martin.moretesting;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by Martin on 23.08.2016.
- */
+public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingyListAdapter.ViewHolder> {
 
-public class WeatherThingyListAdapter extends ArrayAdapter<WeatherThingy> {
-
-    private final static String TAG = "WTListAdapter";
-
-    private HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+    private HashMap<String, Integer> mIdMap = new HashMap<>();
     private Context context;
     private List<WeatherThingy> listWeatherThingies;
 
-    public WeatherThingyListAdapter(Context context, int resource, List<WeatherThingy> objects) {
-        super(context, resource, objects);
+
+    public WeatherThingyListAdapter(Context context, List<WeatherThingy> objects) {
         this.context = context;
         this.listWeatherThingies = objects;
 
@@ -35,45 +29,69 @@ public class WeatherThingyListAdapter extends ArrayAdapter<WeatherThingy> {
         }
     }
 
-//    @Override
-//    public long getItemId(int position) {
-//        try {
-//            String item = getItem(position).getAddress();
-//            return mIdMap.get(item);
-//        } catch (Exception e) {
-//            Log.i(TAG, "getItemId: Failed to get item ID.");
-//        }
-//        return 0;
-//    }
+    public void clear(){
+        listWeatherThingies = null;
+        notifyDataSetChanged();
+    }
 
-    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.weather_thingy_list_item, null);
 
-        View view = convertView;
-        if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.weather_thingy_list_item, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+
+        holder.txtTemperature.setText(String.format(Locale.ENGLISH, "%.1f" + (char) 0x00B0 + "C", listWeatherThingies.get(position).getCurrentWeather().getTemperature()));
+
+        holder.txtHumidity.setText(String.format(Locale.ENGLISH, "%.1f%%", listWeatherThingies.get(position).getCurrentWeather().getHumidity()));
+
+        holder.txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa", listWeatherThingies.get(position).getCurrentWeather().getPressure()));
+
+        holder.txtDeviceAddress.setText(listWeatherThingies.get(position).getAddress());
+
+        holder.txtRssi.setText(String.format(Locale.ENGLISH, "%d dBm", listWeatherThingies.get(position).getmBleModel().rssi));
+
+        holder.txtBattery.setText(String.format(Locale.ENGLISH, "%d%%", listWeatherThingies.get(position).getCurrentWeather().getBatteryLevel()));
+
+        holder.dataHeaderView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout container = holder.dataContainer;
+                container.setVisibility(container.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+            }
+        });
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return listWeatherThingies.size();
+    }
+
+    protected class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView txtTemperature, txtHumidity, txtPressure, txtDeviceAddress, txtRssi, txtBattery;
+        LinearLayout dataContainer;
+        LinearLayout parentLayout;
+        LinearLayout dataHeaderView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            txtTemperature = (TextView) itemView.findViewById(R.id.txtListTemperature);
+            txtHumidity = (TextView) itemView.findViewById(R.id.txtListHumidity);
+            txtPressure = (TextView) itemView.findViewById(R.id.txtListPressure);
+            txtDeviceAddress = (TextView) itemView.findViewById(R.id.txtListDeviceAddress);
+            txtRssi = (TextView) itemView.findViewById(R.id.txtListDeviceRssi);
+            txtBattery = (TextView) itemView.findViewById(R.id.txtListBattery);
+
+            dataContainer = (LinearLayout) itemView.findViewById(R.id.sensor_data_container);
+            parentLayout = (LinearLayout) itemView.findViewById(R.id.parent_view);
+            dataHeaderView = (LinearLayout) itemView.findViewById(R.id.data_header_view);
         }
-
-        TextView txtTemperature = (TextView) view.findViewById(R.id.txtListTemperature);
-        txtTemperature.setText(String.format(Locale.ENGLISH, "%.1f" + (char) 0x00B0 + "C", listWeatherThingies.get(position).getCurrentWeather().getTemperature()));
-
-        TextView txtHumidity = (TextView) view.findViewById(R.id.txtListHumidity);
-        txtHumidity.setText(String.format(Locale.ENGLISH, "%.1f%%", listWeatherThingies.get(position).getCurrentWeather().getHumidity()));
-
-        TextView txtPressure = (TextView) view.findViewById(R.id.txtListPressure);
-        txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa", listWeatherThingies.get(position).getCurrentWeather().getPressure()));
-
-        TextView txtDeviceAddress = (TextView) view.findViewById(R.id.txtListDeviceAddress);
-        txtDeviceAddress.setText(listWeatherThingies.get(position).getAddress());
-
-        TextView txtRssi = (TextView) view.findViewById(R.id.txtListDeviceRssi);
-        txtRssi.setText(String.format(Locale.ENGLISH, "%d dBm", listWeatherThingies.get(position).getmBleModel().rssi));
-
-        TextView txtBattery = (TextView) view.findViewById(R.id.txtListBattery);
-        txtBattery.setText(String.format(Locale.ENGLISH, "%d%%", listWeatherThingies.get(position).getCurrentWeather().getBatteryLevel()));
-
-        return view;
     }
 }
