@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeatherThingy v2</string>
+    <string name="app_name">Weather Thingy</string>
     <string name="default_text">---</string>
 
     <string name="something">Something</string>

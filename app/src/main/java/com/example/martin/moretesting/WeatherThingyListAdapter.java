@@ -33,7 +33,9 @@ public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingy
     }
 
     public void clear(){
-        listWeatherThingies = null;
+        for (int i = 0; i < listWeatherThingies.size(); i++) {
+            listWeatherThingies.remove(i);
+        }
         notifyDataSetChanged();
     }
 
