@@ -121,7 +121,12 @@ public class BluetoothGattCallbackHandler {
 
                 if (BluetoothModel.WEATHER_THINGY_CHAR_TEMPERATURE_UUID.equals(characteristic.getUuid())) {
                     final double temperature = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0) / 100.0;
+                    final double temperatureMax  = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 4) / 100.0;
+                    final double temperatureMin  = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 8) / 100.0;
+                    Log.i(TAG, "occ: dev:" + gatt.getDevice() + String.format(Locale.ENGLISH, ", Temp: %.1f,\t\t max: %.1f,\t min: %.1f", temperature, temperatureMax, temperatureMin));
                     mCurrentWeather.setTemperature(temperature);
+                    mCurrentWeather.setTemperatureMax(temperatureMax);
+                    mCurrentWeather.setTemperatureMin(temperatureMin);
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -130,7 +135,12 @@ public class BluetoothGattCallbackHandler {
                     });
                 } else if (BluetoothModel.WEATHER_THINGY_CHAR_HUMIDITY_UUID.equals(characteristic.getUuid())) {
                     final double humidity = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0) / 1024.0;
+                    final double humidityMax  = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 4) / 1024.0;
+                    final double humidityMin  = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 8) / 1024.0;
+                    Log.i(TAG, "occ: dev:" + gatt.getDevice() + String.format(Locale.ENGLISH, ", Hum: %.1f,\t\t max: %.1f,\t min: %.1f", humidity, humidityMax, humidityMin));
                     mCurrentWeather.setHumidity(humidity);
+                    mCurrentWeather.setHumidityMax(humidityMax);
+                    mCurrentWeather.setHumidityMin(humidityMin);
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -139,7 +149,12 @@ public class BluetoothGattCallbackHandler {
                     });
                 }else if (BluetoothModel.WEATHER_THINGY_CHAR_PRESSURE_UUID.equals(characteristic.getUuid())) {
                     final double pressure = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0) / 100.0;
+                    final double pressureMax  = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 4) / 100.0;
+                    final double pressureMin  = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 8) / 100.0;
+                    Log.i(TAG, "occ: dev:" + gatt.getDevice() + String.format(Locale.ENGLISH, ", Pres: %.1f,\t max: %.1f,\t min: %.1f", pressure, pressureMax, pressureMin));
                     mCurrentWeather.setPressure(pressure);
+                    mCurrentWeather.setPressureMax(pressureMax);
+                    mCurrentWeather.setPressureMin(pressureMin);
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

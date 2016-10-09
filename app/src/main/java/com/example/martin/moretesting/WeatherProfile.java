@@ -10,8 +10,69 @@ import android.bluetooth.BluetoothGattService;
 public class WeatherProfile {
     private MainActivity mainActivity;
 
-    private double temperature, humidity, pressure;
+    private double temperature, temperatureMin, temperatureMax;
+    private double humidity, humidityMin, humidityMax;
+    private double pressure, pressureMin, pressureMax;
+
+
     private int batteryLevel;
+    private BluetoothGattService weatherService;
+    private BluetoothGattCharacteristic charTemperature;
+    private BluetoothGattCharacteristic charHumidity;
+    private BluetoothGattCharacteristic charPressure;
+
+    private BluetoothGattService batteryService;
+    private BluetoothGattCharacteristic charBattery;
+
+    public double getPressureMax() {
+        return pressureMax;
+    }
+
+    public void setPressureMax(double pressureMax) {
+        this.pressureMax = pressureMax;
+    }
+
+    public double getPressureMin() {
+        return pressureMin;
+    }
+
+    public void setPressureMin(double pressureMin) {
+        this.pressureMin = pressureMin;
+    }
+
+    public double getHumidityMax() {
+        return humidityMax;
+    }
+
+    public void setHumidityMax(double humidityMax) {
+        this.humidityMax = humidityMax;
+    }
+
+    public double getHumidityMin() {
+        return humidityMin;
+    }
+
+    public void setHumidityMin(double humidityMin) {
+        this.humidityMin = humidityMin;
+    }
+
+    public double getTemperatureMax() {
+        return temperatureMax;
+    }
+
+    public void setTemperatureMax(double temperatureMax) {
+        this.temperatureMax = temperatureMax;
+    }
+
+    public double getTemperatureMin() {
+        return temperatureMin;
+    }
+
+    public void setTemperatureMin(double temperatureMin) {
+        this.temperatureMin = temperatureMin;
+    }
+
+
 
     public int getBatteryLevel() {
         return batteryLevel;
@@ -21,13 +82,6 @@ public class WeatherProfile {
         this.batteryLevel = batteryLevel;
     }
 
-    private BluetoothGattService weatherService;
-    private BluetoothGattCharacteristic charTemperature;
-    private BluetoothGattCharacteristic charHumidity;
-    private BluetoothGattCharacteristic charPressure;
-
-    private BluetoothGattService batteryService;
-    private BluetoothGattCharacteristic charBattery;
 
     public BluetoothGattService getBatteryService() {
         return batteryService;

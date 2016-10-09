@@ -53,9 +53,13 @@ public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingy
 
         holder.txtTemperature.setText(String.format(Locale.ENGLISH, "%.1f" + (char) 0x00B0 + "C", listWeatherThingies.get(position).getCurrentWeather().getTemperature()));
 
-        holder.txtHumidity.setText(String.format(Locale.ENGLISH, "%.1f%%", listWeatherThingies.get(position).getCurrentWeather().getHumidity()));
+        holder.txtHumidity.setText(String.format(Locale.ENGLISH, "%.1f%%, Min %.1f%%, Max %.1f%%", listWeatherThingies.get(position).getCurrentWeather().getHumidity(),
+                listWeatherThingies.get(position).getCurrentWeather().getHumidityMin(),
+                listWeatherThingies.get(position).getCurrentWeather().getHumidityMax()));
 
-        holder.txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa", listWeatherThingies.get(position).getCurrentWeather().getPressure()));
+        holder.txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa, Min %.1fhPa, Max %.1fhPa", listWeatherThingies.get(position).getCurrentWeather().getPressure(),
+                listWeatherThingies.get(position).getCurrentWeather().getPressureMin(),
+                listWeatherThingies.get(position).getCurrentWeather().getPressureMax()));
 
         holder.txtDeviceAddress.setText(listWeatherThingies.get(position).getAddress());
 
