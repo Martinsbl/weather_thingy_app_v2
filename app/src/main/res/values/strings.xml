@@ -2,5 +2,6 @@
     <string name="app_name">Weather Thingy</string>
     <string name="default_text">---</string>
 
-    <string name="something">Something</string>
+    <string name="save">Save</string>
+    <string name="sensor_name_hint">Change sensor name</string>
 </resources>

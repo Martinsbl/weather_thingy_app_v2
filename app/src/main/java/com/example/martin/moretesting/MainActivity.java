@@ -19,7 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
 
     private final String TAG = "MainActivity";
 
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         listViewWeatherThingy = (RecyclerView) findViewById(R.id.listWeatherThingies);
         listViewWeatherThingy.setLayoutManager(new LinearLayoutManager(this));
-        listAdapter = new WeatherThingyListAdapter(this, weatherThingiesList);
+        listAdapter = new WeatherThingyListAdapter(this, this, weatherThingiesList);
         listViewWeatherThingy.setAdapter(listAdapter);
     }
 
@@ -111,6 +111,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             continueWithLogic();
         }
 
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+
+        return true;
     }
 
     @Override

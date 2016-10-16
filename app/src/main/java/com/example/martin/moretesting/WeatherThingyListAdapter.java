@@ -22,10 +22,11 @@ public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingy
     private HashMap<String, Integer> mIdMap = new HashMap<>();
     private Context context;
     private List<WeatherThingy> listWeatherThingies;
+    private View.OnLongClickListener listener;
 
-
-    public WeatherThingyListAdapter(Context context, List<WeatherThingy> objects) {
+    public WeatherThingyListAdapter(Context context, View.OnLongClickListener listener, List<WeatherThingy> objects) {
         this.context = context;
+        this.listener = listener;
         this.listWeatherThingies = objects;
 
 
@@ -83,6 +84,15 @@ public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingy
             }
         });
 
+        holder.dataHeaderView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                //TODO: fyre av ny aktivitet hvor man sender inn device. Skrive inn detaljer om enhet og lagre i Shared Preferences
+
+                return true;
+            }
+        });
     }
 
     @Override
