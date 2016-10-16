@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -52,14 +54,17 @@ public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingy
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         holder.txtTemperature.setText(String.format(Locale.ENGLISH, "%.1f" + (char) 0x00B0 + "C", listWeatherThingies.get(position).getCurrentWeather().getTemperature()));
+        holder.txtTemperatureMax.setText(String.format(Locale.ENGLISH, "Min: %.1f" + (char) 0x00B0 + "C" + "  :  Max: %.1f" + (char) 0x00B0 + "C",
+                listWeatherThingies.get(position).getCurrentWeather().getTemperatureMin(),
+                listWeatherThingies.get(position).getCurrentWeather().getTemperatureMax()));
 
-        holder.txtHumidity.setText(String.format(Locale.ENGLISH, "%.1f%%, Min %.1f%%, Max %.1f%%", listWeatherThingies.get(position).getCurrentWeather().getHumidity(),
-                listWeatherThingies.get(position).getCurrentWeather().getHumidityMin(),
-                listWeatherThingies.get(position).getCurrentWeather().getHumidityMax()));
+        holder.txtHumidity.setText(String.format(Locale.ENGLISH, "%.1f%%", listWeatherThingies.get(position).getCurrentWeather().getHumidity()));
+        holder.txtHumidityMax.setText(String.format(Locale.ENGLISH, "Max: %.1f%%", listWeatherThingies.get(position).getCurrentWeather().getHumidityMax()));
+        holder.txtHumidityMin.setText(String.format(Locale.ENGLISH, "Min: %.1f%%", listWeatherThingies.get(position).getCurrentWeather().getHumidityMin()));
 
-        holder.txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa, Min %.1fhPa, Max %.1fhPa", listWeatherThingies.get(position).getCurrentWeather().getPressure(),
-                listWeatherThingies.get(position).getCurrentWeather().getPressureMin(),
-                listWeatherThingies.get(position).getCurrentWeather().getPressureMax()));
+        holder.txtPressure.setText(String.format(Locale.ENGLISH, "%.1fhPa", listWeatherThingies.get(position).getCurrentWeather().getPressure()));
+        holder.txtPressureMax.setText(String.format(Locale.ENGLISH, "Max: %.1fhPa", listWeatherThingies.get(position).getCurrentWeather().getPressureMax()));
+        holder.txtPressureMin.setText(String.format(Locale.ENGLISH, "Min: %.1fhPa", listWeatherThingies.get(position).getCurrentWeather().getPressureMin()));
 
         holder.txtDeviceAddress.setText(listWeatherThingies.get(position).getAddress());
 
@@ -87,7 +92,10 @@ public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingy
 
     protected class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtTemperature, txtHumidity, txtPressure, txtDeviceAddress, txtRssi, txtBattery;
+        TextView txtDeviceAddress, txtRssi, txtBattery;
+        TextView txtTemperature, txtTemperatureMin, txtTemperatureMax;
+        TextView txtHumidity, txtHumidityMin, txtHumidityMax;
+        TextView txtPressure,txtPressureMin,txtPressureMax;
         LinearLayout dataContainer;
         LinearLayout parentLayout;
         LinearLayout dataHeaderView;
@@ -96,8 +104,17 @@ public class WeatherThingyListAdapter extends RecyclerView.Adapter<WeatherThingy
         public ViewHolder(View itemView) {
             super(itemView);
             txtTemperature = (TextView) itemView.findViewById(R.id.txtListTemperature);
+            txtTemperatureMax = (TextView) itemView.findViewById(R.id.txtListTemperatureMinMax);
+//            txtTemperatureMin = (TextView) itemView.findViewById(R.id.txtListHumidityMin);
+
             txtHumidity = (TextView) itemView.findViewById(R.id.txtListHumidity);
+            txtHumidityMax = (TextView) itemView.findViewById(R.id.txtListHumidityMax);
+            txtHumidityMin = (TextView) itemView.findViewById(R.id.txtListHumidityMin);
+
             txtPressure = (TextView) itemView.findViewById(R.id.txtListPressure);
+            txtPressureMax = (TextView) itemView.findViewById(R.id.txtListPressureMax);
+            txtPressureMin = (TextView) itemView.findViewById(R.id.txtListPressureMin);
+
             txtDeviceAddress = (TextView) itemView.findViewById(R.id.txtListDeviceAddress);
             txtRssi = (TextView) itemView.findViewById(R.id.txtListDeviceRssi);
             txtBattery = (TextView) itemView.findViewById(R.id.txtListBattery);
